@@ -26,7 +26,7 @@ public class DemoController {
     @RequestMapping(path = "/test", method = RequestMethod.GET)
     public ResponseEntity<?> helloWorld(@RequestParam(name = "id", defaultValue = "GOOGLE") String id) {
         nyseCurencyService.getCurrencyServiceForStack("APPN", LocalDateTime.now());
-        robotCurrencyService.getCurrencyServiceForStack("APPR", LocalDateTime.now());
+        robotCurrencyService.getCurrencyServiceForStack("APPRR", LocalDateTime.now());
         return ResponseEntity.ok("ok");
     }
 
