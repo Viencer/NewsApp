@@ -18,12 +18,12 @@ public class NewsController {
         return " News rest api";
     }
 
-    @GetMapping(value = "/Categorizednews/{country}/{category}")
+    @GetMapping(value = "/Category/{country}/{category}")
     public List<Group> sendCategorizedUpdate(@PathVariable String country, @PathVariable String category) throws ParseException, IOException, JSONException {
         return NewsService.categorySearch(country, category);
     }
 
-    @GetMapping(value = "/Sourcednews/{country}/{source123}")
+    @GetMapping(value = "/Source/{country}/{source123}")
     public List<Group> sendSourcedUpdate(@PathVariable String country, @PathVariable String source123) throws ParseException, IOException, JSONException {
         return NewsService.countrySearch(country, source123);
     }
