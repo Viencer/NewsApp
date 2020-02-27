@@ -1,8 +1,9 @@
 package com.spring.task.ntc_twoo.controller;
 
 
-import com.spring.task.ntc_twoo.model.Group;
+import com.spring.task.ntc_twoo.model.Articles;
 import com.spring.task.ntc_twoo.service.NewsService;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.json.JSONException;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,14 +19,14 @@ public class NewsController {
         return " News rest api";
     }
 
-    @GetMapping(value = "/Category/{country}/{category}")
-    public List<Group> sendCategorizedUpdate(@PathVariable String country, @PathVariable String category) throws ParseException, IOException, JSONException {
+    @GetMapping(value = "/category/{country}/{category}")
+    public List<Articles> sendCategorizedUpdate(@PathVariable String country, @PathVariable String category) throws ParseException, IOException, JSONException, InvalidFormatException {
         return NewsService.categorySearch(country, category);
     }
 
-    @GetMapping(value = "/Source/{country}/{source123}")
-    public List<Group> sendSourcedUpdate(@PathVariable String country, @PathVariable String source123) throws ParseException, IOException, JSONException {
-        return NewsService.countrySearch(country, source123);
+    @GetMapping(value = "/country/{country}")
+    public List<Articles> sendSourcedUpdate(@PathVariable String country) throws ParseException, IOException, JSONException, InvalidFormatException {
+        return NewsService.countrySearch(country);
     }
 
 }

@@ -4,7 +4,7 @@ public class Articles {
 
     private String author;
 
-    private Source source;
+    private String source;
 
     private String title;
 
@@ -13,7 +13,6 @@ public class Articles {
     private String description;
 
     private String imageUrl;
-
 
     private String publishedAt;
 
@@ -25,11 +24,11 @@ public class Articles {
         this.author = author;
     }
 
-    public Source getSource() {
+    public String getSource() {
         return source;
     }
 
-    public void setSource(Source source) {
+    public void setSource(String source) {
         this.source = source;
     }
 
@@ -72,5 +71,18 @@ public class Articles {
 
     public void setPublishedAt(String publishedAt) {
         this.publishedAt = publishedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "Articles{" +
+                "author='" + author + '\'' +
+                ", source='" + source + '\'' +
+                ", title='" + title + '\'' +
+                ", urlSource='" + urlSource + '\'' +
+                ", description='" + description + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", publishedAt='" + publishedAt + '\'' +
+                '}';
     }
 }
