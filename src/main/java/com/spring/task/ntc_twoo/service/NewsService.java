@@ -96,7 +96,6 @@ public class NewsService extends MappingJackson2HttpMessageConverter implements 
             newsList.add(articles);
         }
         Writerr.write(newsList);
-        Word.create();
         Word.wordWrite(newsList);
         return newsList;
     }
