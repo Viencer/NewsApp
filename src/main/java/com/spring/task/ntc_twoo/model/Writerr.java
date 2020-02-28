@@ -2,7 +2,6 @@ package com.spring.task.ntc_twoo.model;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.*;
 import java.util.List;
 
