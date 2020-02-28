@@ -21,9 +21,12 @@ public class Word {
             XWPFRun run = paragraph.createRun();
             run.setText(articles.getTitle());
             run.addBreak();
+            run.addBreak();
             run.setText("Автор: " + articles.getAuthor());
             run.addBreak();
+            run.addBreak();
             run.setText("Источник: " + articles.getSource());
+            run.addBreak();
             run.addBreak();
             if (articles.getImageUrl() == null) {
                 run.setText("нет изображения");
@@ -31,9 +34,12 @@ public class Word {
                 run.addPicture(image(articles.getImageUrl()), XWPFDocument.PICTURE_TYPE_JPEG, "", Units.toEMU(200), Units.toEMU(200));
             }
             run.addBreak();
+            run.addBreak();
             run.setText(articles.getDescription());
             run.addBreak();
+            run.addBreak();
             run.setText("Дата публикации: "+articles.getPublishedAt());
+            run.addBreak();
             run.addBreak();
             run.addBreak();
         }
