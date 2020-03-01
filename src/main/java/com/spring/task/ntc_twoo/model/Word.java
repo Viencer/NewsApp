@@ -3,12 +3,13 @@ package com.spring.task.ntc_twoo.model;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.*;
+
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
 public class Word {
 
@@ -38,7 +39,7 @@ public class Word {
             run.setText(articles.getDescription());
             run.addBreak();
             run.addBreak();
-            run.setText("Дата публикации: "+articles.getPublishedAt());
+            run.setText("Дата публикации: " + articles.getPublishedAt());
             run.addBreak();
             run.addBreak();
             run.addBreak();
