@@ -1,5 +1,6 @@
-package com.spring.task.ntc_twoo.model;
+package com.spring.task.ntc_twoo.service;
 
+import com.spring.task.ntc_twoo.model.Articles;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.*;
@@ -11,7 +12,7 @@ import java.util.List;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 
-public class Word {
+public class SaveInfoService implements SaveInfoServiceIn {
 
     public static void wordWrite(List<Articles> list) throws IOException, InvalidFormatException {
         FileOutputStream fos = new FileOutputStream(new File("save.docx"));

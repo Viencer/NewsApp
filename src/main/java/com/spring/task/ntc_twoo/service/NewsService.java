@@ -1,7 +1,6 @@
 package com.spring.task.ntc_twoo.service;
 
 import com.spring.task.ntc_twoo.model.Articles;
-import com.spring.task.ntc_twoo.model.Word;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -94,7 +93,7 @@ public class NewsService extends MappingJackson2HttpMessageConverter implements 
             articles.setSource(name);
             newsList.add(articles);
         }
-        Word.wordWrite(newsList);
+        SaveInfoService.wordWrite(newsList);
         return newsList;
     }
 }
