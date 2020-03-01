@@ -4,15 +4,13 @@ import com.spring.task.ntc_twoo.model.Articles;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.*;
-
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.json.JSONException;
+
 
 public class SaveInfoService implements SaveInfoServiceIn {
 
@@ -59,7 +57,7 @@ public class SaveInfoService implements SaveInfoServiceIn {
         doc.close();
     }
 
-    public static void save() throws IOException, JSONException, InvalidFormatException {
+    public static void save() throws IOException, InvalidFormatException {
         wordWrite(list);
     }
 

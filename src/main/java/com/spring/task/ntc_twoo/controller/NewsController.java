@@ -29,19 +29,19 @@ public class NewsController {
     }
 
     @GetMapping(value = "/country/{country}/word")
-    public String wordSaveCountry(@PathVariable String country) throws IOException, InvalidFormatException, JSONException {
+    public String wordSaveCountry(@PathVariable String country) throws IOException, InvalidFormatException {
         SaveInfoService.save();
         return "Информация сохранена";
     }
 
     @GetMapping(value = "/category/{country}/{category}/word")
-    public String wordSaveCategory(@PathVariable String country, @PathVariable String category) throws IOException, InvalidFormatException, JSONException {
+    public String wordSaveCategory(@PathVariable String country, @PathVariable String category) throws IOException, InvalidFormatException {
         SaveInfoService.save();
         return "Информация сохранена";
     }
 
     @GetMapping(value = "/word")
-    public String wordSaveSession() throws IOException, InvalidFormatException, JSONException {
+    public String wordSaveSession() throws IOException, InvalidFormatException {
         SaveInfoService.save();
         return "Информация сохранена";
     }
