@@ -8,11 +8,19 @@ import org.apache.poi.xwpf.usermodel.*;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.json.JSONException;
 
 public class SaveInfoService implements SaveInfoServiceIn {
+
+    private static List<Articles> list = new ArrayList<>();
+
+    public SaveInfoService(List<Articles> list) {
+        this.list = list;
+    }
 
     public static void wordWrite(List<Articles> list) throws IOException, InvalidFormatException {
         FileOutputStream fos = new FileOutputStream(new File("save.docx"));
@@ -49,6 +57,10 @@ public class SaveInfoService implements SaveInfoServiceIn {
         fos.flush();
         fos.close();
         doc.close();
+    }
+
+    public static void save() throws IOException, JSONException, InvalidFormatException {
+        wordWrite(list);
     }
 
     public static InputStream image(String url) throws IOException {

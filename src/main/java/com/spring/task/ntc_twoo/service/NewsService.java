@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +32,12 @@ public class NewsService extends MappingJackson2HttpMessageConverter implements 
         return action(url);
     }
 
+
     public static List<Articles> action(String url) throws JSONException, IOException, InvalidFormatException {
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.getForObject(url, String.class);
+
+        List<Articles> newsList = new ArrayList<>();
 
         JSONObject root = new JSONObject(result);
 
@@ -44,9 +48,6 @@ public class NewsService extends MappingJackson2HttpMessageConverter implements 
         String urlother = null;
         String urlToImage = null;
         String publishedAt = null;
-
-        List<Articles> newsList = new ArrayList<>();
-
 
         JSONArray articlesObject = root.getJSONArray("articles");
 
@@ -93,7 +94,7 @@ public class NewsService extends MappingJackson2HttpMessageConverter implements 
             articles.setSource(name);
             newsList.add(articles);
         }
-        SaveInfoService.wordWrite(newsList);
+        SaveInfoService save = new SaveInfoService(newsList);
         return newsList;
     }
 }
