@@ -7,7 +7,6 @@ import org.json.JSONObject;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,7 +82,6 @@ public class NewsService extends MappingJackson2HttpMessageConverter implements 
             articles.setSource(name);
             newsList.add(articles);
         }
-        SaveInfoService save = new SaveInfoService(newsList);
         return newsList;
     }
 }

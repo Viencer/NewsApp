@@ -7,18 +7,14 @@ import org.apache.poi.xwpf.usermodel.*;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
 import java.util.List;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.json.JSONException;
+import org.springframework.stereotype.Service;
 
-
+@Service
 public class SaveInfoService implements SaveInfoServiceIn {
 
-    private static List<Articles> list = new ArrayList<>();
-
-    public SaveInfoService(List<Articles> list) {
-        this.list = list;
-    }
 
     public static void wordWrite(List<Articles> list) throws IOException, InvalidFormatException {
         FileOutputStream fos = new FileOutputStream(new File("save.docx"));
@@ -39,7 +35,11 @@ public class SaveInfoService implements SaveInfoServiceIn {
             if (articles.getImageUrl() == null) {
                 run.setText("нет изображения");
             } else {
-                run.addPicture(image(articles.getImageUrl()), XWPFDocument.PICTURE_TYPE_JPEG, "", Units.toEMU(200), Units.toEMU(200));
+                try {
+                    run.addPicture(image(articles.getImageUrl()), XWPFDocument.PICTURE_TYPE_JPEG, "", Units.toEMU(200), Units.toEMU(200));
+                } catch (java.net.MalformedURLException e) {
+                    run.setText("нет изображения");
+                }
             }
             run.addBreak();
             run.addBreak();
@@ -57,8 +57,12 @@ public class SaveInfoService implements SaveInfoServiceIn {
         doc.close();
     }
 
-    public static void save() throws IOException, InvalidFormatException {
-        wordWrite(list);
+    public static void saveCountry(String url) throws IOException, InvalidFormatException, JSONException {
+        wordWrite(NewsService.countrySearch(url));
+    }
+
+    public static void saveCategory(String url1, String ur2) throws IOException, InvalidFormatException, JSONException {
+        wordWrite(NewsService.categorySearch(url1, ur2));
     }
 
     public static InputStream image(String url) throws IOException {
