@@ -1,16 +1,16 @@
 package com.spring.task.ntc_twoo.controller;
 
 import com.spring.task.ntc_twoo.model.Articles;
-import com.spring.task.ntc_twoo.service.NewsService;
 import com.spring.task.ntc_twoo.service.NewsServiceIn;
-
 import com.spring.task.ntc_twoo.service.SaveInfoService;
-import org.json.JSONException;
+import com.spring.task.ntc_twoo.service.SaveInfoServiceIn;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -18,6 +18,7 @@ public class NewsController {
 
     @Autowired
     NewsServiceIn newsServiceIn;
+    SaveInfoServiceIn saveInfoService;
 
     @RequestMapping(value = "//", method = RequestMethod.GET)
     public String usage_guide() {
@@ -33,20 +34,22 @@ public class NewsController {
 
 
     @GetMapping(value = "/country/{country}")
-    public ResponseEntity sendSourcedUpdateDefault(@PathVariable String country) throws JSONException {
+    public ResponseEntity sendSourcedUpdateDefault(@PathVariable String country) {
         List<Articles> articles = newsServiceIn.countrySearch(country);
         return new ResponseEntity<List>(articles, HttpStatus.OK);
     }
 
     @GetMapping(value = "/country/{country}/word")
-    public String wordSaveCountry(@PathVariable String country) {
-        SaveInfoService.saveCountry(country);
-        return "Информация сохранена";
+    public ResponseEntity<FileOutputStream> wordSaveCountry(@PathVariable String country) throws IOException {
+        SaveInfoService service = new SaveInfoService();
+        FileOutputStream outputStream = new FileOutputStream("dod.docx");
+        service.saveCountry(country).writeTo(outputStream);
+        return ResponseEntity.ok().body(outputStream);
     }
 
     @GetMapping(value = "/category/{country}/{category}/word")
-    public String wordSaveCategory(@PathVariable String country, @PathVariable String category) {
-        SaveInfoService.saveCategory(country, category);
-        return "Информация сохранена";
+    public File wordSaveCategory(@PathVariable String country, @PathVariable String category) throws IOException {
+        saveInfoService.saveCategory(country, category);
+        return new File("ss.docx");
     }
 }

@@ -1,7 +1,6 @@
 package com.spring.task.ntc_twoo.service;
 
 import com.spring.task.ntc_twoo.model.Articles;
-import org.json.JSONException;
 
 import java.util.List;
 

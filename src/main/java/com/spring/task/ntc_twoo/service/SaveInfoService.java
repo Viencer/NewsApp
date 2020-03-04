@@ -19,8 +19,10 @@ public class SaveInfoService implements SaveInfoServiceIn {
 
     private static final Logger logger = Logger.getLogger(SaveInfoService.class);
 
-    public void wordWrite(List<Articles> list) throws FileNotFoundException {
-        FileOutputStream fos = new FileOutputStream(new File("save.docx"));
+    NewsService newsService = new NewsService();
+
+    public ByteArrayOutputStream wordWrite(List<Articles> list) throws IOException {
+        ByteArrayOutputStream fos = new ByteArrayOutputStream();
 
         XWPFDocument doc = new XWPFDocument();
         XWPFParagraph paragraph = doc.createParagraph();
@@ -56,30 +58,19 @@ public class SaveInfoService implements SaveInfoServiceIn {
             run.addBreak();
             run.addBreak();
         }
-        try {
-            doc.write(fos);
-            fos.flush();
-            fos.close();
-            doc.close();
-        } catch (IOException e) {
-            logger.error(e);
-        }
+        doc.write(fos);
+        fos.flush();
+        fos.close();
+        doc.close();
+        return fos;
     }
 
-    public void saveCountry(String url) {
-//        try {
-//            wordWrite(NewsService.countrySearch(url));
-//        } catch (FileNotFoundException e) {
-//            logger.error(e);
-//        }
+    public ByteArrayOutputStream saveCountry(String url) throws IOException {
+        return wordWrite(newsService.countrySearch(url));
     }
 
-    public  void saveCategory(String url1, String ur2) {
-//        try {
-//            wordWrite(NewsService.categorySearch(url1, ur2));
-//        } catch (FileNotFoundException e) {
-//            logger.error(e);
-//        }
+    public void saveCategory(String url1, String ur2) throws IOException {
+        wordWrite(newsService.categorySearch(url1, ur2));
     }
 
     public InputStream image(String url) throws IOException {

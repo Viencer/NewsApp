@@ -5,7 +5,6 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -13,13 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class NewsService extends MappingJackson2HttpMessageConverter implements NewsServiceIn {
+public class NewsService implements NewsServiceIn {
 
     private static final Logger logger = Logger.getLogger(NewsService.class);
-
-    public NewsService() {
-        setPrettyPrint(true);
-    }
 
     public List<Articles> categorySearch(String country, String category) {
 
