@@ -1,6 +1,7 @@
 package com.spring.task.ntc_twoo.service;
 
 import com.spring.task.ntc_twoo.model.Articles;
+import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,31 +14,29 @@ import java.util.List;
 
 @Service
 public class NewsService extends MappingJackson2HttpMessageConverter implements NewsServiceIn {
+    private static final Logger logger = Logger.getLogger(NewsService.class);
 
     public NewsService() {
         setPrettyPrint(true);
     }
 
-    public static List<Articles> categorySearch(String country, String category) throws JSONException {
+    public static List<Articles> categorySearch(String country, String category) {
 
         String url = "https://newsapi.org/v2/top-headlines?apiKey=49f3c8dcde3f40978ca3c1a782bfe27f&country=" + country + "&category=" + category + "";
         return action(url);
     }
 
-    public static List<Articles> countrySearch(String country) throws JSONException {
+    public static List<Articles> countrySearch(String country) {
 
         String url = "https://newsapi.org/v2/top-headlines?apiKey=49f3c8dcde3f40978ca3c1a782bfe27f&country=" + country;
         return action(url);
     }
 
-    public static List<Articles> action(String url) throws JSONException {
+    public static List<Articles> action(String url) {
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.getForObject(url, String.class);
 
         List<Articles> newsList = new ArrayList<Articles>();
-
-        JSONObject root = new JSONObject(result);
-
         String name = null;
         String author = null;
         String title = null;
@@ -46,42 +45,47 @@ public class NewsService extends MappingJackson2HttpMessageConverter implements 
         String urlToImage = null;
         String publishedAt = null;
 
-        JSONArray articlesObject = root.getJSONArray("articles");
+        try {
+            JSONObject root = new JSONObject(result);
+            JSONArray articlesObject = root.getJSONArray("articles");
 
-        for (int i = 0; i < articlesObject.length(); i++) {
+            for (int i = 0; i < articlesObject.length(); i++) {
 
-            JSONObject arrayElement = articlesObject.getJSONObject(i);
+                JSONObject arrayElement = articlesObject.getJSONObject(i);
 
-            JSONObject sourceother = arrayElement.getJSONObject("source");
+                JSONObject sourceother = arrayElement.getJSONObject("source");
 
-            name = sourceother.getString("name");
+                name = sourceother.getString("name");
 
-            if (!arrayElement.isNull("author")) {
-                author = arrayElement.getString("author");
-            } else {
-                author = name;
+                if (!arrayElement.isNull("author")) {
+                    author = arrayElement.getString("author");
+                } else {
+                    author = name;
+                }
+
+                title = arrayElement.getString("title");
+
+                description = arrayElement.getString("description");
+
+                urlother = arrayElement.getString("url");
+
+                urlToImage = arrayElement.getString("urlToImage");
+
+                publishedAt = arrayElement.getString("publishedAt");
+
+                Articles articles = new Articles();
+
+                articles.setAuthor(author);
+                articles.setDescription(description);
+                articles.setPublishedAt(publishedAt);
+                articles.setTitle(title);
+                articles.setUrlSource(urlother);
+                articles.setImageUrl(urlToImage);
+                articles.setSource(name);
+                newsList.add(articles);
             }
-
-            title = arrayElement.getString("title");
-
-            description = arrayElement.getString("description");
-
-            urlother = arrayElement.getString("url");
-
-            urlToImage = arrayElement.getString("urlToImage");
-
-            publishedAt = arrayElement.getString("publishedAt");
-
-            Articles articles = new Articles();
-
-            articles.setAuthor(author);
-            articles.setDescription(description);
-            articles.setPublishedAt(publishedAt);
-            articles.setTitle(title);
-            articles.setUrlSource(urlother);
-            articles.setImageUrl(urlToImage);
-            articles.setSource(name);
-            newsList.add(articles);
+        } catch (JSONException e) {
+            logger.error(e);
         }
         return newsList;
     }

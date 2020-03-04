@@ -1,24 +1,27 @@
 package com.spring.task.ntc_twoo.service;
 
 import com.spring.task.ntc_twoo.model.Articles;
+import org.apache.log4j.Logger;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.usermodel.*;
+
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
+
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.json.JSONException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SaveInfoService implements SaveInfoServiceIn {
 
+    private static final Logger logger = Logger.getLogger(SaveInfoService.class);
 
-    public static void wordWrite(List<Articles> list) throws IOException, InvalidFormatException {
+    public static void wordWrite(List<Articles> list) throws FileNotFoundException {
         FileOutputStream fos = new FileOutputStream(new File("save.docx"));
+
         XWPFDocument doc = new XWPFDocument();
         XWPFParagraph paragraph = doc.createParagraph();
 
@@ -38,7 +41,8 @@ public class SaveInfoService implements SaveInfoServiceIn {
             } else {
                 try {
                     run.addPicture(image(articles.getImageUrl()), XWPFDocument.PICTURE_TYPE_JPEG, "", Units.toEMU(200), Units.toEMU(200));
-                } catch (java.net.MalformedURLException e) {
+                } catch (IOException | InvalidFormatException e) {
+                    logger.error(e);
                     run.setText("нет изображения");
                 }
             }
@@ -52,19 +56,31 @@ public class SaveInfoService implements SaveInfoServiceIn {
             run.addBreak();
             run.addBreak();
         }
-        ResponseEntity.ok().body(new FileOutputStream(new File("Save.docx")));
-        doc.write(fos);
-        fos.flush();
-        fos.close();
-        doc.close();
+        try {
+            doc.write(fos);
+            fos.flush();
+            fos.close();
+            doc.close();
+        } catch (IOException e) {
+            logger.error(e);
+        }
     }
 
-    public static void saveCountry(String url) throws IOException, InvalidFormatException, JSONException {
-        wordWrite(NewsService.countrySearch(url));
+    public static void saveCountry(String url) {
+        try {
+            wordWrite(NewsService.countrySearch(url));
+        } catch (FileNotFoundException e) {
+            logger.error(e);
+        }
+
     }
 
-    public static void saveCategory(String url1, String ur2) throws IOException, InvalidFormatException, JSONException {
-        wordWrite(NewsService.categorySearch(url1, ur2));
+    public static void saveCategory(String url1, String ur2) {
+        try {
+            wordWrite(NewsService.categorySearch(url1, ur2));
+        } catch (FileNotFoundException e) {
+            logger.error(e);
+        }
     }
 
     public static InputStream image(String url) throws IOException {
