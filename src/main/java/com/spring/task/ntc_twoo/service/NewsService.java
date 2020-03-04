@@ -14,25 +14,26 @@ import java.util.List;
 
 @Service
 public class NewsService extends MappingJackson2HttpMessageConverter implements NewsServiceIn {
+
     private static final Logger logger = Logger.getLogger(NewsService.class);
 
     public NewsService() {
         setPrettyPrint(true);
     }
 
-    public static List<Articles> categorySearch(String country, String category) {
+    public List<Articles> categorySearch(String country, String category) {
 
         String url = "https://newsapi.org/v2/top-headlines?apiKey=49f3c8dcde3f40978ca3c1a782bfe27f&country=" + country + "&category=" + category + "";
         return action(url);
     }
 
-    public static List<Articles> countrySearch(String country) {
-
+    public List<Articles> countrySearch(String country) {
         String url = "https://newsapi.org/v2/top-headlines?apiKey=49f3c8dcde3f40978ca3c1a782bfe27f&country=" + country;
         return action(url);
     }
 
-    public static List<Articles> action(String url) {
+    public List<Articles> action(String url) {
+
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.getForObject(url, String.class);
 
