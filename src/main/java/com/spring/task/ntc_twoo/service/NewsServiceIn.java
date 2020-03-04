@@ -9,7 +9,7 @@ public interface NewsServiceIn {
         return null;
     }
 
-    static List<Articles> countrySearch(String country, String source123) {
+    static List<Articles> countrySearch(String country) {
         return null;
     }
 

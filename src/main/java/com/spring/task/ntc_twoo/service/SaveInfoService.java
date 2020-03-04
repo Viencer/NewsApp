@@ -10,6 +10,7 @@ import java.net.URLConnection;
 import java.util.List;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.json.JSONException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -51,6 +52,7 @@ public class SaveInfoService implements SaveInfoServiceIn {
             run.addBreak();
             run.addBreak();
         }
+        ResponseEntity.ok().body(new FileOutputStream(new File("Save.docx")));
         doc.write(fos);
         fos.flush();
         fos.close();
