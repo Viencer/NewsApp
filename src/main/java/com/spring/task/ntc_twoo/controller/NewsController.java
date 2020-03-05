@@ -42,7 +42,7 @@ public class NewsController {
 
     @GetMapping(value = "/country/{country}/word")
     public ResponseEntity<byte[]> wordSaveCountry(@PathVariable String country) {
-        File file = new File("save.docx");
+        File file = new File("Country_Save.docx");
         byte[] doc = saveInfoService.saveCountry(country).toByteArray();
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName())
@@ -50,9 +50,9 @@ public class NewsController {
                 .body(doc);
     }
 
-    @GetMapping(value = "/category/{country}/{category}/word/{name}")
-    public ResponseEntity<byte[]> wordSaveCategory(@PathVariable String country, @PathVariable String category, @PathVariable String name) throws IOException {
-        File file = new File(name + ".docx");
+    @GetMapping(value = "/category/{country}/{category}/word")
+    public ResponseEntity<byte[]> wordSaveCategory(@PathVariable String country, @PathVariable String category) throws IOException {
+        File file = new File("Category_Save.docx");
         byte[] doc = saveInfoService.saveCategory(country, category).toByteArray();
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName())

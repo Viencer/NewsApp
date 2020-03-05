@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,13 +17,19 @@ public class NewsService implements NewsServiceIn {
 
     private static final Logger logger = Logger.getLogger(NewsService.class);
 
+    private final String urlSite;
+
+    public NewsService(@Value("${apiKey}") String key) {
+        this.urlSite = "https://newsapi.org/v2/top-headlines?apiKey=" + key;
+    }
+
     public List<Articles> categorySearch(String country, String category) {
-        String url = "https://newsapi.org/v2/top-headlines?apiKey=49f3c8dcde3f40978ca3c1a782bfe27f&country=" + country + "&category=" + category + "";
+        String url = urlSite + "&country=" + country + "&category=" + category;
         return action(url);
     }
 
     public List<Articles> countrySearch(String country) {
-        String url = "https://newsapi.org/v2/top-headlines?apiKey=49f3c8dcde3f40978ca3c1a782bfe27f&country=" + country;
+        String url = urlSite + "&country=" + country;
         return action(url);
     }
 

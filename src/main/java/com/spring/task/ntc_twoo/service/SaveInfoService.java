@@ -12,6 +12,7 @@ import java.net.URLConnection;
 import java.util.List;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,7 +20,8 @@ public class SaveInfoService implements SaveInfoServiceIn {
 
     private static final Logger logger = Logger.getLogger(SaveInfoService.class);
 
-    private NewsService newsService = new NewsService();
+    @Autowired
+    private NewsServiceIn serviceIn;
 
     public ByteArrayOutputStream wordWrite(List<Articles> list) {
         ByteArrayOutputStream fos = new ByteArrayOutputStream();
@@ -71,11 +73,11 @@ public class SaveInfoService implements SaveInfoServiceIn {
     }
 
     public ByteArrayOutputStream saveCountry(String url) {
-        return wordWrite(newsService.countrySearch(url));
+        return wordWrite(serviceIn.countrySearch(url));
     }
 
     public ByteArrayOutputStream saveCategory(String url1, String ur2) {
-        return wordWrite(newsService.categorySearch(url1, ur2));
+        return wordWrite(serviceIn.categorySearch(url1, ur2));
     }
 
     public InputStream image(String url) throws IOException {
