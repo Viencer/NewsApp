@@ -1,4 +1,4 @@
-package com.spring.task.ntc_twoo.controller;
+package com.spring.task.ntc_twoo.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;

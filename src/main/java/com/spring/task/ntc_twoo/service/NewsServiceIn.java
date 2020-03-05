@@ -8,5 +8,5 @@ public interface NewsServiceIn {
 
     List<Articles> categorySearch(String country, String category);
 
-    List<Articles> countrySearch(String country);
+     List<Articles> countrySearch(String country);
 }

@@ -19,9 +19,9 @@ public class SaveInfoService implements SaveInfoServiceIn {
 
     private static final Logger logger = Logger.getLogger(SaveInfoService.class);
 
-    NewsService newsService = new NewsService();
+    private NewsService newsService = new NewsService();
 
-    public ByteArrayOutputStream wordWrite(List<Articles> list) throws IOException {
+    public ByteArrayOutputStream wordWrite(List<Articles> list) {
         ByteArrayOutputStream fos = new ByteArrayOutputStream();
 
         XWPFDocument doc = new XWPFDocument();
@@ -58,19 +58,24 @@ public class SaveInfoService implements SaveInfoServiceIn {
             run.addBreak();
             run.addBreak();
         }
-        doc.write(fos);
-        fos.flush();
-        fos.close();
-        doc.close();
+
+        try {
+            doc.write(fos);
+            fos.flush();
+            fos.close();
+            doc.close();
+        } catch (IOException e) {
+            logger.error(e);
+        }
         return fos;
     }
 
-    public ByteArrayOutputStream saveCountry(String url) throws IOException {
+    public ByteArrayOutputStream saveCountry(String url) {
         return wordWrite(newsService.countrySearch(url));
     }
 
-    public void saveCategory(String url1, String ur2) throws IOException {
-        wordWrite(newsService.categorySearch(url1, ur2));
+    public ByteArrayOutputStream saveCategory(String url1, String ur2) {
+        return wordWrite(newsService.categorySearch(url1, ur2));
     }
 
     public InputStream image(String url) throws IOException {

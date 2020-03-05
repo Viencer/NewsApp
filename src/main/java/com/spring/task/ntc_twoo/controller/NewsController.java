@@ -2,14 +2,14 @@ package com.spring.task.ntc_twoo.controller;
 
 import com.spring.task.ntc_twoo.model.Articles;
 import com.spring.task.ntc_twoo.service.NewsServiceIn;
-import com.spring.task.ntc_twoo.service.SaveInfoService;
 import com.spring.task.ntc_twoo.service.SaveInfoServiceIn;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -17,8 +17,9 @@ import java.util.List;
 public class NewsController {
 
     @Autowired
-    NewsServiceIn newsServiceIn;
-    SaveInfoServiceIn saveInfoService;
+    private NewsServiceIn newsServiceIn;
+    @Autowired
+    private SaveInfoServiceIn saveInfoService;
 
     @RequestMapping(value = "//", method = RequestMethod.GET)
     public String usage_guide() {
@@ -40,16 +41,22 @@ public class NewsController {
     }
 
     @GetMapping(value = "/country/{country}/word")
-    public ResponseEntity<FileOutputStream> wordSaveCountry(@PathVariable String country) throws IOException {
-        SaveInfoService service = new SaveInfoService();
-        FileOutputStream outputStream = new FileOutputStream("dod.docx");
-        service.saveCountry(country).writeTo(outputStream);
-        return ResponseEntity.ok().body(outputStream);
+    public ResponseEntity<byte[]> wordSaveCountry(@PathVariable String country) {
+        File file = new File("save.docx");
+        byte[] doc = saveInfoService.saveCountry(country).toByteArray();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName())
+                .contentLength(doc.length)
+                .body(doc);
     }
 
-    @GetMapping(value = "/category/{country}/{category}/word")
-    public File wordSaveCategory(@PathVariable String country, @PathVariable String category) throws IOException {
-        saveInfoService.saveCategory(country, category);
-        return new File("ss.docx");
+    @GetMapping(value = "/category/{country}/{category}/word/{name}")
+    public ResponseEntity<byte[]> wordSaveCategory(@PathVariable String country, @PathVariable String category, @PathVariable String name) throws IOException {
+        File file = new File(name + ".docx");
+        byte[] doc = saveInfoService.saveCategory(country, category).toByteArray();
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + file.getName())
+                .contentLength(doc.length)
+                .body(doc);
     }
 }

@@ -17,7 +17,6 @@ public class NewsService implements NewsServiceIn {
     private static final Logger logger = Logger.getLogger(NewsService.class);
 
     public List<Articles> categorySearch(String country, String category) {
-
         String url = "https://newsapi.org/v2/top-headlines?apiKey=49f3c8dcde3f40978ca3c1a782bfe27f&country=" + country + "&category=" + category + "";
         return action(url);
     }
@@ -27,7 +26,7 @@ public class NewsService implements NewsServiceIn {
         return action(url);
     }
 
-    public List<Articles> action(String url) {
+    private List<Articles> action(String url) {
 
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.getForObject(url, String.class);
