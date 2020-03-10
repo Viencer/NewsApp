@@ -8,6 +8,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,19 +18,19 @@ public class NewsService implements NewsServiceIn {
 
     private static final Logger logger = Logger.getLogger(NewsService.class);
 
-    private final String urlSite;
+    private final UriComponentsBuilder urlSite;
 
     public NewsService(@Value("${apiKey}") String key) {
-        this.urlSite = "https://newsapi.org/v2/top-headlines?apiKey=" + key;
+        this.urlSite = UriComponentsBuilder.fromHttpUrl("https://newsapi.org/v2/top-headlines").queryParam("apiKey", key);
     }
 
     public List<Articles> categorySearch(String country, String category) {
-        String url = urlSite + "&country=" + country + "&category=" + category;
+        String url = urlSite.cloneBuilder().queryParam("country", country).queryParam("category", category).build().toString();
         return action(url);
     }
 
     public List<Articles> countrySearch(String country) {
-        String url = urlSite + "&country=" + country;
+        String url = urlSite.cloneBuilder().queryParam("country", country).build().toString();
         return action(url);
     }
 
