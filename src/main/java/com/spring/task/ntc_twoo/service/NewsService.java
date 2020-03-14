@@ -1,7 +1,8 @@
 package com.spring.task.ntc_twoo.service;
 
-import com.spring.task.ntc_twoo.config.JsonParser;
+import com.spring.task.ntc_twoo.model.converters.JsonParser;
 import com.spring.task.ntc_twoo.model.Articles;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -13,17 +14,21 @@ public class NewsService implements NewsServiceIn {
 
     private final UriComponentsBuilder urlSite;
 
+    @Autowired
+    private JsonParser jsonParser;
+
     public NewsService(@Value("${apiKey}") String key) {
         this.urlSite = UriComponentsBuilder.fromHttpUrl("https://newsapi.org/v2/top-headlines").queryParam("apiKey", key);
     }
 
+
     public List<Articles> categorySearch(String country, String category) {
         String url = urlSite.cloneBuilder().queryParam("country", country).queryParam("category", category).build().toString();
-        return new JsonParser().convert(url);
+        return jsonParser.convert(url);
     }
 
     public List<Articles> countrySearch(String country) {
         String url = urlSite.cloneBuilder().queryParam("country", country).build().toString();
-        return new JsonParser().convert(url);
+        return jsonParser.convert(url);
     }
 }

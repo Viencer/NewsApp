@@ -1,4 +1,4 @@
-package com.spring.task.ntc_twoo.config;
+package com.spring.task.ntc_twoo.model.converters;
 
 import com.spring.task.ntc_twoo.model.Articles;
 import com.spring.task.ntc_twoo.service.NewsService;
@@ -7,11 +7,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class JsonParser implements Converter<String, List<Articles>> {
 
     private static final Logger logger = Logger.getLogger(NewsService.class);
