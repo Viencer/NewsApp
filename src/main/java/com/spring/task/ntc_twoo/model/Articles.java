@@ -1,5 +1,7 @@
 package com.spring.task.ntc_twoo.model;
 
+import java.util.Objects;
+
 public class Articles {
 
     private String author;
@@ -71,6 +73,25 @@ public class Articles {
 
     public void setPublishedAt(String publishedAt) {
         this.publishedAt = publishedAt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Articles)) return false;
+        Articles articles = (Articles) o;
+        return Objects.equals(getAuthor(), articles.getAuthor()) &&
+                Objects.equals(getSource(), articles.getSource()) &&
+                Objects.equals(getTitle(), articles.getTitle()) &&
+                Objects.equals(getUrlSource(), articles.getUrlSource()) &&
+                Objects.equals(getDescription(), articles.getDescription()) &&
+                Objects.equals(getImageUrl(), articles.getImageUrl()) &&
+                Objects.equals(getPublishedAt(), articles.getPublishedAt());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getAuthor(), getSource(), getTitle(), getUrlSource(), getDescription(), getImageUrl(), getPublishedAt());
     }
 
     @Override
