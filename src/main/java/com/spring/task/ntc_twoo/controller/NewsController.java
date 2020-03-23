@@ -28,16 +28,16 @@ public class NewsController {
     }
 
     @GetMapping(value = "/category/{country}/{category}")
-    public ResponseEntity sendCategorizedUpdateDefault(@PathVariable String country, @PathVariable String category) {
+    public ResponseEntity<List<Articles>> sendCategorizedUpdateDefault(@PathVariable String country, @PathVariable String category) {
         List<Articles> articles = newsServiceIn.categorySearch(country, category);
-        return new ResponseEntity<List>(articles, HttpStatus.OK);
+        return new ResponseEntity<List<Articles>>(articles, HttpStatus.OK);
     }
 
 
     @GetMapping(value = "/country/{country}")
-    public ResponseEntity sendSourcedUpdateDefault(@PathVariable String country) {
+    public ResponseEntity<List<Articles>> sendSourcedUpdateDefault(@PathVariable String country) {
         List<Articles> articles = newsServiceIn.countrySearch(country);
-        return new ResponseEntity<List>(articles, HttpStatus.OK);
+        return new ResponseEntity<List<Articles>>(articles, HttpStatus.OK);
     }
 
     @GetMapping(value = "/country/{country}/word")

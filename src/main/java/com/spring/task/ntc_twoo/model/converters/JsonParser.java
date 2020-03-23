@@ -18,11 +18,10 @@ public class JsonParser implements Converter<String, List<Articles>> {
 
     private static final Logger logger = Logger.getLogger(NewsService.class);
 
-    private List<Articles> newsList = new ArrayList<Articles>();
-
     @Override
     public List<Articles> convert(String url) {
 
+        List<Articles> newsList = new ArrayList<Articles>();
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.getForObject(url, String.class);
 
