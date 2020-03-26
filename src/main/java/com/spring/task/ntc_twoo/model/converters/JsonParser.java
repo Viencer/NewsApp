@@ -1,7 +1,8 @@
 package com.spring.task.ntc_twoo.model.converters;
 
 import com.spring.task.ntc_twoo.model.Articles;
-import com.spring.task.ntc_twoo.service.NewsService;
+import com.spring.task.ntc_twoo.service.GetDataIn;
+import com.spring.task.ntc_twoo.service.GetDataService;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,61 +17,21 @@ import java.util.List;
 @Component
 public class JsonParser implements Converter<String, List<Articles>> {
 
-    private static final Logger logger = Logger.getLogger(NewsService.class);
+    private static final Logger logger = Logger.getLogger(JsonParser.class);
 
     @Override
     public List<Articles> convert(String url) {
-
         List<Articles> newsList = new ArrayList<Articles>();
-        RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.getForObject(url, String.class);
-
-        String name = null;
-        String author = null;
-        String title = null;
-        String description = null;
-        String urlother = null;
-        String urlToImage = null;
-        String publishedAt = null;
-
+        GetDataIn getDataIn = new GetDataService();
         try {
+            RestTemplate restTemplate = new RestTemplate();
+            String result = restTemplate.getForObject(url, String.class);
             JSONObject root = new JSONObject(result);
             JSONArray articlesObject = root.getJSONArray("articles");
 
             for (int i = 0; i < articlesObject.length(); i++) {
-
                 JSONObject arrayElement = articlesObject.getJSONObject(i);
-
-                JSONObject sourceother = arrayElement.getJSONObject("source");
-
-                name = sourceother.getString("name");
-
-                if (!arrayElement.isNull("author")) {
-                    author = arrayElement.getString("author");
-                } else {
-                    author = name;
-                }
-
-                title = arrayElement.getString("title");
-
-                description = arrayElement.getString("description");
-
-                urlother = arrayElement.getString("url");
-
-                urlToImage = arrayElement.getString("urlToImage");
-
-                publishedAt = arrayElement.getString("publishedAt");
-
-                Articles articles = new Articles();
-
-                articles.setAuthor(author);
-                articles.setDescription(description);
-                articles.setPublishedAt(publishedAt);
-                articles.setTitle(title);
-                articles.setUrlSource(urlother);
-                articles.setImageUrl(urlToImage);
-                articles.setSource(name);
-                newsList.add(articles);
+                newsList.add(getDataIn.getData(arrayElement));
             }
         } catch (JSONException e) {
             logger.error(e);
