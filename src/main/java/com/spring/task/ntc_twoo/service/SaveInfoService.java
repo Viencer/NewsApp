@@ -4,16 +4,19 @@ import com.spring.task.ntc_twoo.model.Articles;
 import org.apache.log4j.Logger;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.Units;
-import org.apache.poi.xwpf.usermodel.*;
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
-
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import java.util.concurrent.ExecutionException;
 
 @Service
 public class SaveInfoService implements SaveInfoServiceIn {
@@ -45,6 +48,7 @@ public class SaveInfoService implements SaveInfoServiceIn {
             } else {
                 try {
                     run.addPicture(image(articles.getImageUrl()), XWPFDocument.PICTURE_TYPE_JPEG, "", Units.toEMU(200), Units.toEMU(200));
+                    image(articles.getImageUrl()).close();
                 } catch (IOException | InvalidFormatException e) {
                     logger.error(e);
                     run.setText("нет изображения");
@@ -60,7 +64,6 @@ public class SaveInfoService implements SaveInfoServiceIn {
             run.addBreak();
             run.addBreak();
         }
-
         try {
             doc.write(fos);
             fos.flush();
@@ -72,11 +75,11 @@ public class SaveInfoService implements SaveInfoServiceIn {
         return fos;
     }
 
-    public ByteArrayOutputStream saveCountry(String url) {
+    public ByteArrayOutputStream saveCountry(String url) throws ExecutionException, InterruptedException {
         return wordWrite(serviceIn.countrySearch(url));
     }
 
-    public ByteArrayOutputStream saveCategory(String url1, String ur2) {
+    public ByteArrayOutputStream saveCategory(String url1, String ur2) throws ExecutionException, InterruptedException {
         return wordWrite(serviceIn.categorySearch(url1, ur2));
     }
 

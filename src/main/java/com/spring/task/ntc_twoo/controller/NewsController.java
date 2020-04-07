@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 public class NewsController {
@@ -28,20 +29,20 @@ public class NewsController {
     }
 
     @GetMapping(value = "/category/{country}/{category}")
-    public ResponseEntity<List<Articles>> sendCategorizedUpdateDefault(@PathVariable String country, @PathVariable String category) {
+    public ResponseEntity<List<Articles>> sendCategorizedUpdateDefault(@PathVariable String country, @PathVariable String category) throws ExecutionException, InterruptedException {
         List<Articles> articles = newsServiceIn.categorySearch(country, category);
         return new ResponseEntity<List<Articles>>(articles, HttpStatus.OK);
     }
 
 
     @GetMapping(value = "/country/{country}")
-    public ResponseEntity<List<Articles>> sendSourcedUpdateDefault(@PathVariable String country) {
+    public ResponseEntity<List<Articles>> sendSourcedUpdateDefault(@PathVariable String country) throws ExecutionException, InterruptedException {
         List<Articles> articles = newsServiceIn.countrySearch(country);
         return new ResponseEntity<List<Articles>>(articles, HttpStatus.OK);
     }
 
     @GetMapping(value = "/country/{country}/word")
-    public ResponseEntity<byte[]> wordSaveCountry(@PathVariable String country) {
+    public ResponseEntity<byte[]> wordSaveCountry(@PathVariable String country) throws ExecutionException, InterruptedException {
         File file = new File("Country_Save.docx");
         byte[] doc = saveInfoService.saveCountry(country).toByteArray();
         return ResponseEntity.ok()
@@ -51,7 +52,7 @@ public class NewsController {
     }
 
     @GetMapping(value = "/category/{country}/{category}/word")
-    public ResponseEntity<byte[]> wordSaveCategory(@PathVariable String country, @PathVariable String category) throws IOException {
+    public ResponseEntity<byte[]> wordSaveCategory(@PathVariable String country, @PathVariable String category) throws IOException, ExecutionException, InterruptedException {
         File file = new File("Category_Save.docx");
         byte[] doc = saveInfoService.saveCategory(country, category).toByteArray();
         return ResponseEntity.ok()
